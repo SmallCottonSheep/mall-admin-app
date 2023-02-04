@@ -13,10 +13,10 @@
     </div>
     <ul class="user-info">
       <li>
-        欢迎Andy
+        {{$store.state.user.username}}
         <a-icon type="down" />
       </li>
-      <li><a href="#">退出登录</a></li>
+      <li @click="logOut">退出登录</li>
     </ul>
   </div>
 </template>
@@ -29,6 +29,10 @@ export default {
   methods: {
     toggleCollapsed() {
       this.$store.dispatch('changeCollapsed');
+    },
+    logOut() {
+      this.$store.dispatch('removeUserInfo');
+      this.$router.push('/login');
     },
   },
 };

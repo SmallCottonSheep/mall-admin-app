@@ -62,7 +62,7 @@ export default {
           api
             .login(this.loginForm)
             .then((res) => {
-              this.$message.success(res.msg);
+              this.$store.dispatch('setUserInfo', res);
               this.$router.push({
                 name: 'Home',
               });
