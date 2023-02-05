@@ -45,7 +45,13 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "camelcase": 2,
+      "curly": 2,
+      "brace-style": [2, "1tbs"],
+      "quotes": [2, "single"],
+      "semi": [2, "always"]
+    }
   },
   "browserslist": [
     "> 1%",
