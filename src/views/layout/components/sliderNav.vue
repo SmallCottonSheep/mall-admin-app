@@ -5,9 +5,15 @@
         <a-icon :type="$store.state.collapsed ? 'menu-unfold' : 'menu-fold'" />
       </a-button>
       <div class="breadcrumb">
-        <a-breadcrumb>
-          <a-breadcrumb-item>商品</a-breadcrumb-item>
-          <a-breadcrumb-item><a href="">商品列表</a></a-breadcrumb-item>
+        <a-breadcrumb v-if="currentRoute.length > 1">
+          <a-breadcrumb-item>
+            {{currentRoute[0] ? currentRoute[0].meta.title : ''}}
+          </a-breadcrumb-item>
+          <a-breadcrumb-item>
+            <router-link :to="{name: currentRoute[1].name}">
+              {{currentRoute[1] ? currentRoute[1].meta.title : ''}}
+            </router-link>
+          </a-breadcrumb-item>
         </a-breadcrumb>
       </div>
     </div>
@@ -24,9 +30,17 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      currentRoute: this.$router.currentRoute.matched,
+    };
+  },
+  watch: {
+    $route: 'initMeun',
   },
   methods: {
+    initMeun() {
+      this.currentRoute = this.$router.currentRoute.matched;
+    },
     toggleCollapsed() {
       this.$store.dispatch('changeCollapsed');
     },

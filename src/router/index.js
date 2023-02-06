@@ -14,30 +14,38 @@ const ayncRouterMap = [
     name: 'Product',
     meta: {
       title: '商品',
+      hidder: false,
+      icon: 'inbox',
     },
     component: Home,
     children: [
       {
-        path: '/list',
+        path: 'list',
         name: 'ProductList',
         meta: {
           title: '商品列表',
+          hidder: false,
+          icon: 'ordered-list',
         },
         component: () => import('@/views/page/productList.vue'),
       },
       {
-        path: '/add',
+        path: 'add',
         name: 'ProductAdd',
         meta: {
           title: '添加商品  ',
+          hidder: false,
+          icon: 'border-inner',
         },
         component: () => import('@/views/page/productAdd.vue'),
       },
       {
-        path: '/category',
+        path: 'category',
         name: 'Category',
         meta: {
           title: '类目管理',
+          hidder: false,
+          icon: 'setting',
         },
         component: () => import('@/views/page/category.vue'),
       },
@@ -50,14 +58,19 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+    redirect: '/index',
     meta: {
       title: '首页',
+      hidder: false,
+      icon: 'home',
     },
     children: [{
-      path: '/index',
-      name: 'index',
+      path: 'index',
+      name: 'Index',
       meta: {
         title: '统计',
+        hidder: false,
+        icon: 'line-chart',
       },
       component: () => import('@/views/page/index.vue'),
     }],
@@ -67,6 +80,7 @@ const routes = [
     name: 'Login',
     meta: {
       title: '登录',
+      hidder: true,
     },
     component: Login,
   },
@@ -82,10 +96,12 @@ router.beforeEach((to, from, next) => {
     if (store.state.user.username && store.state.user.appkey && store.state.user.role) {
       if (!isAddRouter) {
         const muenRouter = getMuenRouter(store.state.user.role, ayncRouterMap);
-        for (let i = 0; i < muenRouter.lenght; i += 1) {
-          router.addRoute(muenRouter[i]);
-        }
-        store.dispatch('changeMeunRouter', routes.concat(muenRouter));
+        store.dispatch('changeMeunRouter', routes.concat(muenRouter)).then(() => {
+          for (let i = 0; i < muenRouter.length; i += 1) {
+            router.addRoute(muenRouter[i]);
+          }
+          next();
+        });
         isAddRouter = true;
       }
       return next();
